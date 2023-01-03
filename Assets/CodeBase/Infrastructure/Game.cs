@@ -7,9 +7,9 @@ namespace CodeBase.Infrastructure
     {
         public GameStateMachine StateMachine { get; }
 
-        public Game()
+        public Game(ICoroutineRunner coroutineRunner, LoadingCurtain curtain)
         {
-            StateMachine = new GameStateMachine(new ServiceLocator());
+            StateMachine = new GameStateMachine(new SceneLoader(coroutineRunner), curtain, new ServiceLocator());
         }
     }
 }

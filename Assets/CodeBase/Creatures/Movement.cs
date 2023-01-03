@@ -35,7 +35,7 @@ namespace CodeBase.Creatures
 
         private void AddForce(Rigidbody2D rigidbody, Vector2 direction)
         {
-            rigidbody.AddForce(direction * (_stepForce * Time.fixedDeltaTime));
+            rigidbody.AddForce(direction * (_stepForce * Time.fixedDeltaTime), ForceMode2D.Impulse);
         }
     }
 }
