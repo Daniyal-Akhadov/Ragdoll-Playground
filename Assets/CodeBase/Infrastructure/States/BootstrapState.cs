@@ -1,6 +1,8 @@
 ﻿using CodeBase.Infrastructure.AssetManagement;
 using CodeBase.Infrastructure.Factory;
 using CodeBase.Infrastructure.Services;
+using CodeBase.Infrastructure.Services.PersistentProgress;
+using CodeBase.Infrastructure.Services.SaveLoad;
 
 namespace CodeBase.Infrastructure.States
 {
@@ -32,13 +34,18 @@ namespace CodeBase.Infrastructure.States
 
         private void EnterLoadLevel()
         {
-            _stateMachine.Enter<LoadLevelState, string>("Main");
+            _stateMachine.Enter<LoadProgressState>();
         }
 
         private void RegisterService()
         {
+            _services.RegisterSingle<IPersistentProgressService>(new PersistentProgressService());
             _services.RegisterSingle<IAssetProvider>(new AssetProvider());
             _services.RegisterSingle<IGameFactory>(new GameFactory(ServiceLocator.Container.Single<IAssetProvider>()));
+            _services.RegisterSingle<ISaveLoadService>
+            (
+                new SaveLoadService(_services.Single<PersistentProgressService>(), _services.Single<IGameFactory>())
+            );
         }
     }
 }

@@ -5,7 +5,7 @@ namespace CodeBase.Logic
     [RequireComponent(typeof(TargetJoint2D))]
     public class DraggablePart : MonoBehaviour
     {
-        [SerializeField] private float _multiplier = 3f;
+        [SerializeField] private float _massMultiplier = 3f;
 
         private Camera _camera;
         private Vector2 _difference;
@@ -16,8 +16,8 @@ namespace CodeBase.Logic
 
         private void Awake()
         {
-            _camera = Camera.main;
             _targetJoint = GetComponent<TargetJoint2D>();
+            _camera = Camera.main;
             _originalMass = _targetJoint.attachedRigidbody.mass;
         }
 
@@ -29,7 +29,7 @@ namespace CodeBase.Logic
         private void OnMouseDown()
         {
             EnableDrag();
-            SetMass(_originalMass * _multiplier);
+            SetMass(_originalMass * _massMultiplier);
         }
 
         private void OnMouseDrag()

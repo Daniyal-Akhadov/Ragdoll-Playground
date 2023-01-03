@@ -1,4 +1,5 @@
 using System.Collections;
+using CodeBase.Logic;
 using UnityEngine;
 
 namespace CodeBase.Creatures
@@ -9,6 +10,7 @@ namespace CodeBase.Creatures
         [SerializeField] private Rigidbody2D _rightLeg;
         [SerializeField] private float _stepForce = 5f;
         [SerializeField] private float _stepBreakTime = 0.5f;
+        [SerializeField] private GettingUp _gettingUp;
 
         private CreatureAnimator _animator;
         private WaitForSeconds _stepWaitForSeconds;
@@ -21,7 +23,7 @@ namespace CodeBase.Creatures
 
         private void Update()
         {
-            if (_movementCoroutine == null)
+            if (_gettingUp.CanGetUp == true && _movementCoroutine == null)
                 _movementCoroutine = StartCoroutine(Move(Vector2.right));
         }
 

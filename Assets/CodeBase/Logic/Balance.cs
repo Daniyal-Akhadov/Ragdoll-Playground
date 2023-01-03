@@ -7,6 +7,7 @@ namespace CodeBase.Logic
     {
         [SerializeField] private float _targetRotation;
         [SerializeField] private float _force;
+        [SerializeField] private GettingUp _gettingUp;
 
         private Rigidbody2D _rigidbody;
 
@@ -17,15 +18,18 @@ namespace CodeBase.Logic
 
         private void FixedUpdate()
         {
-            _rigidbody.MoveRotation
-            (
-                Mathf.LerpAngle
+            if (_gettingUp.CanGetUp == true)
+            {
+                _rigidbody.MoveRotation
                 (
-                    _rigidbody.rotation,
-                    _targetRotation,
-                    _force * Time.fixedDeltaTime
-                )
-            );
+                    Mathf.LerpAngle
+                    (
+                        _rigidbody.rotation,
+                        _targetRotation,
+                        _force * Time.fixedDeltaTime
+                    )
+                );
+            }
         }
     }
 }
