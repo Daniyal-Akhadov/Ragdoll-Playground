@@ -1,4 +1,4 @@
-﻿using CodeBase.Infrastructure.Services;
+﻿using CodeBase.Infrastructure.Factory;
 using UnityEngine;
 
 namespace CodeBase.Infrastructure.States
@@ -8,7 +8,7 @@ namespace CodeBase.Infrastructure.States
         private readonly GameStateMachine _stateMachine;
         private readonly SceneLoader _sceneLoader;
         private readonly LoadingCurtain _curtain;
-        private readonly ServiceLocator _services;
+        private readonly IGameFactory _gameFactory;
 
         private const string InitialPointTag = "InitialPoint";
 
@@ -17,13 +17,13 @@ namespace CodeBase.Infrastructure.States
             GameStateMachine stateMachine,
             SceneLoader sceneLoader,
             LoadingCurtain curtain,
-            ServiceLocator services
+            IGameFactory gameFactory
         )
         {
             _stateMachine = stateMachine;
             _sceneLoader = sceneLoader;
             _curtain = curtain;
-            _services = services;
+            _gameFactory = gameFactory;
         }
 
         public void Enter(string sceneName)
@@ -37,29 +37,9 @@ namespace CodeBase.Infrastructure.States
 
         private void OnLoaded()
         {
-            Transform initialPoint = GameObject.FindWithTag(InitialPointTag).transform;
-            Instantiate(AssetsPath.Hero, at: initialPoint.position);
-            Instantiate(AssetsPath.Hud);
+            _gameFactory.CreateHero(GameObject.FindWithTag(InitialPointTag));
+            _gameFactory.CreateHud();
             _stateMachine.Enter<GameLoopState>();
         }
-
-        private static GameObject Instantiate(string path)
-        {
-            GameObject prefab = Resources.Load<GameObject>(path);
-            return Object.Instantiate(prefab);
-        }
-
-        private static GameObject Instantiate(string path, Vector2 at)
-        {
-            GameObject prefab = Instantiate(path);
-            prefab.transform.position = at;
-            return prefab;
-        }
-    }
-
-    public static class AssetsPath
-    {
-        public const string Hero = "Hero/Hero";
-        public const string Hud = "Hud/Hud";
     }
 }

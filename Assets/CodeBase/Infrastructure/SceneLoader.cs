@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections;
+using CodeBase.Infrastructure.States;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace CodeBase.Infrastructure.States
+namespace CodeBase.Infrastructure
 {
     public class SceneLoader
     {
